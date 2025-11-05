@@ -1,0 +1,2 @@
+# GHC25_GRAPHQL_WORKSHOP
+Modelling a GraphQL API on AWS

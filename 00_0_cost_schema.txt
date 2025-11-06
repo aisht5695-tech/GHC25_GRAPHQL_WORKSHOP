@@ -1,0 +1,22 @@
+# ---------- COST section (instructor solution) ----------
+
+type CostDataSection {
+  # Retrieves the vendor procurement cost for a given ASIN and vendor.
+  vendorCostData(vendorId: ID!): VendorCost
+}
+
+# Represents the latest known vendor procurement cost entry.
+type VendorCost {
+  vendorId: ID!
+  cost: Float!
+  currency: String!
+  updatedAt: AWSDateTime
+}
+
+# Input object used for creating or updating vendor cost data.
+input VendorCostInput {
+  vendorId: ID!
+  cost: Float!
+  currency: String!
+  updatedAt: AWSDateTime
+}

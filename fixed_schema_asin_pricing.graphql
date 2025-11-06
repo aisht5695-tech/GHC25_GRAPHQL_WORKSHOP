@@ -1,0 +1,71 @@
+
+type CatalogSection {
+  catalogData: CatalogData
+}
+
+type CatalogData {
+  # We omit 'asin' here because parent PricingDocument already provides it
+  title: String
+  brand: String
+  category: String
+  description: String
+  defaultCurrency: String
+  updatedAt: AWSDateTime
+}
+
+# ---------- Catalog mutation ----------
+input CatalogDataInput {
+  title: String
+  brand: String
+  category: String
+  description: String
+  defaultCurrency: String
+  updatedAt: AWSDateTime
+}
+
+# ---------- COST section (instructor solution) ----------
+
+type CostDataSection {
+  # Retrieves the vendor procurement cost for a given ASIN and vendor.
+  vendorCostData(vendorId: ID!): VendorCost
+}
+
+# Represents the latest known vendor procurement cost entry.
+type VendorCost {
+  vendorId: ID!
+  cost: Float!
+  currency: String!
+  updatedAt: AWSDateTime
+}
+
+# Input object used for creating or updating vendor cost data.
+input VendorCostInput {
+  vendorId: ID!
+  cost: Float!
+  currency: String!
+  updatedAt: AWSDateTime
+}
+
+# ---------- Core document ----------
+type PricingDocument {
+  asin: ID!
+  catalogSection: CatalogSection
+  costDataSection: CostDataSection
+}
+
+
+type Query {
+  # One-stop read for an ASIN
+  pricingDocument(asin: String!): PricingDocument!
+}
+
+type Mutation {
+  putCatalogData(asin: ID!, catalogData: CatalogDataInput): CatalogData
+  putVendorCost(asin: ID!, costData: VendorCostInput): VendorCost
+}
+
+# ---------- Root entry points ----------
+schema {
+  query: Query
+  mutation: Mutation
+}
